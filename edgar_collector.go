@@ -73,6 +73,53 @@ func (c *collector) CollectEdgarAnnualData(ticker string,
 	return ret, err
 }
 
+func (c *collector) CollectEdgarQuarterData(ticker string,
+	years ...int) ([]Measures, error) {
+
+	var ret []Measures
+
+	fetcher := c.fetcher.(edgar.FilingFetcher)
+
+	fp, err := c.db.Read(ticker)
+
+	var cf edgar.CompanyFolder
+	//If there is no historical data. Get it from Edgar.
+	if err != nil {
+		cf, err = fetcher.CompanyFolder(ticker, edgar.FilingType10Q)
+	} else {
+		cf, err = fetcher.CreateFolder(fp, edgar.FilingType10Q)
+	}
+
+	af := cf.AvailableFilings(edgar.FilingType10Q)
+
+	for _, f := range af {
+		if len(years) > 0 && !contains(f.Year(), years) {
+			continue
+		}
+		fil, err := cf.Filing(edgar.FilingType10Q, f)
+		if err != nil {
+			return nil, err
+		}
+		m := NewMeasures(fil)
+		ret = append(ret, m)
+	}
+
+	sort.Slice(ret, func(i, j int) bool {
+		return ret[i].FiledOn() < ret[j].FiledOn()
+	})
+
+	if len(ret) > 1 {
+		for i := 1; i < len(ret); i++ {
+			err := ret[i].NewYoy(ret[i-1])
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	return ret, err
+}
+
 func (c *collector) SaveEdgarData(ticker string) error {
 	fetcher := c.fetcher.(edgar.FilingFetcher)
 	comp, err := fetcher.CompanyFolder(ticker)
