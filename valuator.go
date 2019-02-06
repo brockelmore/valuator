@@ -113,12 +113,6 @@ func NewValuatorNoFail(ticker string) (Valuator, error) {
 		for _, m := range mea {
 			v.Valuations[ticker].FiledData = append(v.Valuations[ticker].FiledData, m)
 		}
-		avg, err := NewAverages(mea)
-		if err != nil {
-			log.Println("Error collecting averages: ", err.Error())
-			return nil, err
-		}
-		v.Valuations[ticker].Avgs = avg
 	}
 	meq, err := collect.CollectQuarterData(ticker)
 	if err != nil {
