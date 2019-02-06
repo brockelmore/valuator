@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"sort"
-
+	"log"
 	"github.com/brockelmore/edgar"
 )
 
