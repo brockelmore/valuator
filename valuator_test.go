@@ -3,7 +3,7 @@ package valuator
 import (
 	"testing"
 
-	"github.com/palafrank/edgar"
+	"github.com/brockelmore/edgar"
 )
 
 func TestGetEdgarFiling(t *testing.T) {
