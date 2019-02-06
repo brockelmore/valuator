@@ -57,7 +57,7 @@ func NewValuator(ticker string) (Valuator, error) {
 		Valuations: make(map[string]*valuation),
 	}
 	v.Valuations[ticker] = &valuation{
-		FiledData: make(map[string]Measures),
+		FiledData: make(map[string][]Measures),
 		Avgs: nil,
 	}
 	collect, err := NewCollector(collectorEdgar)
