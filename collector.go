@@ -13,6 +13,7 @@ var (
 
 type Collector interface {
 	CollectAnnualData(ticker string, year ...int) ([]Measures, error)
+	CollectQuarterData(ticker string, year ...int) ([]Measures, error)
 	Save(string) error
 }
 
