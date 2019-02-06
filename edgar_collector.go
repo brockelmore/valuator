@@ -49,7 +49,8 @@ func (c *collector) CollectEdgarAnnualData(ticker string,
 		}
 		fil, err := cf.Filing(edgar.FilingType10K, f)
 		if err != nil {
-			return nil, err
+			log.Println("Could not get filing")
+			continue
 		}
 
 		m := NewMeasures(fil)
