@@ -118,6 +118,7 @@ func NewValuatorNoFail(ticker string) (Valuator, error) {
 			log.Println("Error collecting averages: ", err.Error())
 			return nil, err
 		}
+		v.Valuations[ticker].Avgs = avg
 	}
 	meq, err := collect.CollectQuarterData(ticker)
 	if err != nil {
@@ -127,7 +128,7 @@ func NewValuatorNoFail(ticker string) (Valuator, error) {
 			v.Valuations[ticker].FiledData = append(v.Valuations[ticker].FiledData, m)
 		} 
 	}
-	v.Valuations[ticker].Avgs = avg
+	
 	
 	return v, nil
 }
