@@ -71,7 +71,7 @@ func NewValuator(ticker string) (Valuator, error) {
 		return nil, err
 	}
 	for _, m := range mea {
-		v.Valuations[ticker].FiledData[m.FiledOn()] = m
+		v.Valuations[ticker].FiledData = append(v.Valuations[ticker].FiledData, m)
 	}
 	avg, err := NewAverages(mea)
 	if err != nil {
@@ -84,7 +84,7 @@ func NewValuator(ticker string) (Valuator, error) {
 		return nil, err
 	}
 	for _, m := range meq {
-		v.Valuations[ticker].FiledData[m.FiledOn()] = m
+		v.Valuations[ticker].FiledData = append(v.Valuations[ticker].FiledData, m)
 	}
 	v.Valuations[ticker].Avgs = avg
 
