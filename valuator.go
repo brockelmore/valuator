@@ -57,6 +57,7 @@ func NewValuator(ticker string) (Valuator, error) {
 		Valuations: make(map[string]*valuation),
 	}
 	v.Valuations[ticker] = &valuation{
+		FiledData: make(map[string]Measures),
 		Avgs: nil,
 	}
 	collect, err := NewCollector(collectorEdgar)
@@ -69,13 +70,22 @@ func NewValuator(ticker string) (Valuator, error) {
 		log.Println("Error collecting annual data: ", err.Error())
 		return nil, err
 	}
+	for _, m := range mea {
+		v.Valuations[ticker].FiledData[m.FiledOn()] = m
+	}
 	avg, err := NewAverages(mea)
 	if err != nil {
 		log.Println("Error collecting averages: ", err.Error())
 		return nil, err
 	}
-
-	v.Valuations[ticker].FiledData = mea
+	
+	meq, err := collect.CollectQuarterData(ticker)
+	if err != nil {
+		return nil, err
+	}
+	for _, m := range meq {
+		v.Valuations[ticker].FiledData[m.FiledOn()] = m
+	}
 	v.Valuations[ticker].Avgs = avg
 
 	return v, nil
