@@ -39,6 +39,18 @@ func (c *collector) CollectAnnualData(ticker string,
 	return nil, errors.New("Unknown collector type")
 }
 
+func (c *collector) CollectQuarterData(ticker string,
+	years ...int) ([]Measures, error) {
+	switch c.Name() {
+	case collectorEdgar:
+		return c.CollectEdgarQuarterData(ticker, years...)
+	default:
+	}
+	return nil, errors.New("Unknown collector type")
+}
+
+
+
 func (c *collector) Save(ticker string) error {
 	switch c.Name() {
 	case collectorEdgar:
