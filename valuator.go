@@ -90,6 +90,47 @@ func NewValuator(ticker string) (Valuator, error) {
 
 	return v, nil
 }
+func NewValuatorNoFail(ticker string) (Valuator, error) {
+	v := &valuator{
+		db:         NewDB(fileDBUrl, FileDatabaseType),
+		collector:  make(map[string]Collector),
+		Valuations: make(map[string]*valuation),
+	}
+	v.Valuations[ticker] = &valuation{
+		FiledData: []Measures{},
+		Avgs: nil,
+	}
+	collect, err := NewCollector(collectorEdgar)
+	if err != nil {
+		return nil, err
+	}
+	v.collector[ticker] = collect
+	mea, err := collect.CollectAnnualData(ticker)
+	if err != nil {
+		log.Println("Error collecting annual data: ", err.Error())
+// 		return nil, err
+	} else {
+		for _, m := range mea {
+			v.Valuations[ticker].FiledData = append(v.Valuations[ticker].FiledData, m)
+		}
+		avg, err := NewAverages(mea)
+		if err != nil {
+			log.Println("Error collecting averages: ", err.Error())
+			return nil, err
+		}
+	}
+	meq, err := collect.CollectQuarterData(ticker)
+	if err != nil {
+// 		return nil, err
+	} else {
+		for _, m := range meq {
+			v.Valuations[ticker].FiledData = append(v.Valuations[ticker].FiledData, m)
+		} 
+	}
+	v.Valuations[ticker].Avgs = avg
+	
+	return v, nil
+}
 
 func (v *valuator) DiscountedCashFlowTrend(ticker string, dr float64, trend float64, duration int) (float64, error) {
 
