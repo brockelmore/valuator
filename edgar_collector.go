@@ -5,7 +5,7 @@ import (
 	"errors"
 	"sort"
 
-	"github.com/palafrank/edgar"
+	"github.com/brockelmore/edgar"
 )
 
 func NewEdgarCollector() (edgar.FilingFetcher, error) {
