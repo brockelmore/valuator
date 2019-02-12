@@ -12,7 +12,7 @@ import (
 type DatabaseType string
 
 var (
-	fileDBUrl        string       = "/Users/brockelmore/Desktop/db/"
+	fileDBUrl        string       = "/home/brock_elmore/db/"
 	FileDatabaseType DatabaseType = "file"
 )
 
