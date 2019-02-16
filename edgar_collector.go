@@ -53,7 +53,7 @@ func (c *collector) CollectEdgarAnnualData(ticker string,
 			continue
 		}
 
-		m := NewMeasures(fil)
+		m := NewMeasures(fil, false)
 		ret = append(ret, m)
 	}
 	c.SaveEdgarData(ticker)
@@ -101,7 +101,7 @@ func (c *collector) CollectEdgarQuarterData(ticker string,
 		if err != nil {
 			return nil, err
 		}
-		m := NewMeasures(fil)
+		m := NewMeasures(fil, true)
 		ret = append(ret, m)
 	}
 
