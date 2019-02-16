@@ -51,11 +51,13 @@ func (m measures) String() string {
 	return string(data)
 }
 
-func NewMeasures(filing Filing) Measures {
+func NewMeasures(filing Filing, q bool) Measures {
 	m := new(measures)
 	m.filing = filing
 	m.Date = filing.FiledOn()
-	m.collect()
+	if q == false {
+		m.collect()
+	}
 	return m
 }
 
