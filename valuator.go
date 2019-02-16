@@ -102,7 +102,8 @@ func NewValuatorNoFail(ticker string) (Valuator, error) {
 	}
 	collect, err := NewCollector(collectorEdgar)
 	if err != nil {
-		return nil, err
+		log.Println("Error creating new collector: ", err.Error())
+// 		return nil, err
 	}
 	v.collector[ticker] = collect
 	mea, err := collect.CollectAnnualData(ticker)
@@ -116,14 +117,13 @@ func NewValuatorNoFail(ticker string) (Valuator, error) {
 	}
 	meq, err := collect.CollectQuarterData(ticker)
 	if err != nil {
+		log.Println("Error getting quarterly data: ", err.Error())
 // 		return nil, err
 	} else {
 		for _, m := range meq {
 			v.Valuations[ticker].FiledData = append(v.Valuations[ticker].FiledData, m)
 		} 
 	}
-	
-	
 	return v, nil
 }
 
