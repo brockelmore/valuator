@@ -53,8 +53,7 @@ func (v valuator) String() string {
 func (v valuation) String() string {
 	data, err := json.MarshalIndent(v, "", "    ")
 	if err != nil {
-		log.Println(data)
-		log.Fatal("Error marshaling valuation data: ", err)
+		log.Println("Error marshaling valuation data: ", err)
 	}
 	return string(data)
 }
