@@ -109,15 +109,6 @@ func (c *collector) CollectEdgarQuarterData(ticker string,
 		return ret[i].FiledOn() < ret[j].FiledOn()
 	})
 
-	if len(ret) > 1 {
-		for i := 1; i < len(ret); i++ {
-			err := ret[i].NewYoy(ret[i-1])
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
-
 	return ret, err
 }
 
