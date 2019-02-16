@@ -46,6 +46,7 @@ type measures struct {
 func (m measures) String() string {
 	data, err := json.MarshalIndent(m, "", "    ")
 	if err != nil {
+		log.Println(m)
 		log.Fatal("Error marshaling financial data: ", err)
 	}
 	return string(data)
