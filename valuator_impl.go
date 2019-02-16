@@ -45,7 +45,13 @@ func (v valuator) String() string {
 
 	data, err := json.MarshalIndent(v.Valuations, "", "    ")
 	if err != nil {
-		log.Println("Error marshaling valuator data: ", err)
+		v.Valuations = bytes.Replace(v.Valuations, []byte(":NaN"), []byte(":null"), -1) 
+		v.Valuations = bytes.Replace(v.Valuations, []byte(":Inf"), []byte(":null"), -1) 
+		v.Valuations = bytes.Replace(v.Valuations, []byte(":-Inf"), []byte(":null"), -1) 
+		data, err = json.MarshalIndent(v.Valuations, "", "    ")
+		if err != nil {
+			log.Println("Error marshaling valuator data: ", err)
+		}
 	}
 	return string(data)
 }
